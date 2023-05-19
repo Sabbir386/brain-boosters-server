@@ -45,6 +45,21 @@ async function run() {
             res.send(result);
 
         })
+        app.get('/allToys/:Category', async (req, res) => {
+            if (req.params.Category == 'MathToys') {
+                const result = await toyCollection.find({ subCategory: req.params.Category }).toArray();
+                return res.send(result);
+            }
+            else if (req.params.Category == 'EngineeringToys') {
+                const result = await toyCollection.find({ subCategory: req.params.Category }).toArray();
+                return res.send(result);
+            }
+            else if (req.params.Category == 'LanguageToys') {
+                const result = await toyCollection.find({ subCategory: req.params.Category }).toArray();
+                return res.send(result);
+            }
+
+        })
 
     } finally {
         // Ensures that the client will close when you finish/error
