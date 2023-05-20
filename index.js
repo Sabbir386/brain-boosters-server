@@ -36,6 +36,8 @@ async function run() {
 
 
 
+
+
         app.post('/addToy', async (req, res) => {
             const body = req.body;
             const result = await toyCollection.insertOne(body);
@@ -46,6 +48,40 @@ async function run() {
             const result = await toyCollection.find({}).toArray();
             res.send(result);
 
+        })
+
+        app.put('/allToys/:updateId', async (req, res) => {
+            const id = req.params.updateId;
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
+            const updateToy = req.body;
+            const toy = {
+                $set: {
+
+                    name: updateToy.name,
+                    photoUrl: updateToy.photoUrl,
+                    sellerName: updateToy.sellerName,
+                    sellerEmail: updateToy.sellerEmail,
+                    subCategory: updateToy.subCategory,
+                    price: updateToy.price,
+                    ratings: updateToy.ratings,
+                    availableQuantity: updateToy.availableQuantity,
+                    availableQuantity: updateToy.availableQuantity,
+                }
+            }
+            const result = await toyCollection.updateOne(filter, toy, options);
+            res.send(result);
+
+        })
+
+
+
+        app.delete('/allToys/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = { _id: new ObjectId(id) };
+            const result = await toyCollection.deleteOne(query);
+            res.send(result);
         })
         app.get('/allToys/:Category', async (req, res) => {
             if (req.params.Category == 'MathToys') {
@@ -65,14 +101,6 @@ async function run() {
                 return res.send(result);
             }
 
-        })
-
-        app.delete('/allToys/:id', async (req, res) => {
-            const id = req.params.id;
-            console.log(id);
-            const query = { _id: new ObjectId(id) };
-            const result = await toyCollection.deleteOne(query);
-            res.send(result);
         })
 
 
