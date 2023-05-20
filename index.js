@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 
 const express = require('express');
@@ -58,7 +58,18 @@ async function run() {
                 const result = await toyCollection.find({ subCategory: req.params.Category }).toArray();
                 return res.send(result);
             }
+            else {
+                const result = await toyCollection.find({}).toArray();
+                return res.send(result);
+            }
 
+        })
+
+        app.delete('/allToys/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await toyCollection.deleteOne(query);
+            res.send(result);
         })
 
     } finally {
