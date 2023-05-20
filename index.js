@@ -34,6 +34,8 @@ async function run() {
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
+
+
         app.post('/addToy', async (req, res) => {
             const body = req.body;
             const result = await toyCollection.insertOne(body);
@@ -67,10 +69,14 @@ async function run() {
 
         app.delete('/allToys/:id', async (req, res) => {
             const id = req.params.id;
+            console.log(id);
             const query = { _id: new ObjectId(id) };
             const result = await toyCollection.deleteOne(query);
             res.send(result);
         })
+
+
+
 
     } finally {
         // Ensures that the client will close when you finish/error
